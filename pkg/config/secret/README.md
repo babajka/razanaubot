@@ -1,0 +1,1 @@
+To make the bot work, put a secret yaml file into this folder.
