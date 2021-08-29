@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"razanaubot/pkg/config"
 	"razanaubot/pkg/data"
 	"razanaubot/pkg/recurrent"
 	"razanaubot/pkg/telegram"
@@ -13,7 +14,15 @@ func main() {
 		log.Fatal(err)
 	}
 
-	tgService := telegram.BuildService()
+	cfg, err := config.Get()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	tgService, err := telegram.NewWithChannel(cfg.Telegram)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	rec := recurrent.BuildService(dt, tgService)
 

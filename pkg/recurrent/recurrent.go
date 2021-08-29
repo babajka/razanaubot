@@ -3,17 +3,25 @@ package recurrent
 import "razanaubot/pkg/data"
 
 type (
-	telegramService interface {
+	telegramWithChannel interface {
 		SendMessage(string) error
 	}
 )
 
-type Service struct{}
+type Service struct {
+	dt data.Data
 
-func BuildService(dt data.Data, tg telegramService) *Service {
-	return &Service{}
+	tgService telegramWithChannel
+}
+
+func BuildService(dt data.Data, tgService telegramWithChannel) *Service {
+	return &Service{
+		dt:        dt,
+		tgService: tgService,
+	}
 }
 
 func (s *Service) StartWait() error {
+
 	return nil
 }
