@@ -15,9 +15,8 @@ type Service struct {
 
 func NewWithChannel(cfg config.Telegram) (*Service, error) {
 	bot, err := tb.NewBot(tb.Settings{
-		Token:  cfg.Token,
-		Poller: &tb.LongPoller{Timeout: 10 * time.Second},
-		// Verbose: env.Mode == "dev", // Uncomment to enable outputs useful for debug.
+		Token:     cfg.Token,
+		Poller:    &tb.LongPoller{Timeout: 10 * time.Second},
 		ParseMode: tb.ModeMarkdown,
 	})
 	if err != nil {

@@ -1,15 +1,16 @@
 package main
 
 import (
+	"context"
 	"log"
 	"razanaubot/pkg/config"
 	"razanaubot/pkg/data"
-	"razanaubot/pkg/recurrent"
+	"razanaubot/pkg/db/redis"
 	"razanaubot/pkg/telegram"
 )
 
 func main() {
-	dt, err := data.Get()
+	dataService, err := data.New()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -24,9 +25,25 @@ func main() {
 		log.Fatal(err)
 	}
 
-	rec := recurrent.BuildService(dt, tgService)
+	redisService, err := redis.New(cfg.Redis)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	if err := rec.StartWait(); err != nil {
+	lastTextID, err := redisService.GetLastSuccessfulTextID(context.Background())
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	newText, newTextID := dataService.GetTextAfter(lastTextID)
+
+	if err := tgService.SendMessage(newText); err != nil {
+		log.Fatal(err)
+	}
+
+	log.Printf("text with ID '%v' was successfully sent to the channel", newTextID)
+
+	if err := redisService.SetLastSuccessfulTextID(context.Background(), newTextID); err != nil {
 		log.Fatal(err)
 	}
 }

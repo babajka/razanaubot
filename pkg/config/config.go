@@ -10,8 +10,15 @@ type Telegram struct {
 	ChannelID int64  `yaml:"channelID"`
 }
 
+type Redis struct {
+	Addr     string `yaml:"addr"`
+	Password string `yaml:"password"`
+	Key      string `yaml:"key"`
+}
+
 type Config struct {
 	Telegram Telegram `yaml:"telegram"`
+	Redis    Redis    `yaml:"redis"`
 }
 
 func Get() (Config, error) {
