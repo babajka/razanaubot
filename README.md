@@ -16,5 +16,5 @@ Edit with `crontab -e`
 Current config (note that server time is UTC):
 
 ```
-1 6,16 * * * /home/wir-prod/deployed/razanaubot
+1 6 * * * /home/wir-prod/deployed/razanaubot
 ```
