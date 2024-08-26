@@ -9,3 +9,4 @@ deploy-production:
 	cp secrets/production.yaml pkg/config/secret/secret.yaml
 	GOOS=linux GOARCH=amd64 go build -o build/razanaubot ./cmd/bot
 	scp ./build/razanaubot $(HOST):/home/wir-prod/deployed/
+	rm pkg/config/secret/secret.yaml
